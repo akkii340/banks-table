@@ -42,7 +42,7 @@ const useStyles = makeStyles({
   },
 });
 
- const Table = (props)=> {
+ const  StickyHeadTable = (props)=> {
 
   
   const classes = useStyles();
@@ -110,4 +110,4 @@ const useStyles = makeStyles({
     </Paper>
   );
 }
-export default Table
+export default StickyHeadTable
