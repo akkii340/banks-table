@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react'
-import './Cool.css'
+import './App.css'
 import Table from './Components/UI/Table'
 import Select from './Components/UI/Select'
 import {categoryOptions,cityOptions} from './Components/UI/SelectData'
@@ -8,12 +8,15 @@ import SearchIcon from '@material-ui/icons/Search';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import BlockEdge from './Components/UI/BlockEdge'
 import AccountBalanceIcon from '@material-ui/icons/AccountBalance';
+import Spinner from './Components/UI/Spinner'
 
 const App = () => {
     const [alldata,setData] = useState([])
     const [filter,setFilter] = useState({city:'MUMBAI',category:'',search:''})
     const searchRef = React.useRef();
     const [error,setError] = React.useState(null)
+    const [isLoading,setIsLoading] = React.useState(false)
+
   const filterHandler=(e)=>{
     if(e.target.id == 'city')
     setFilter({...filter,city:e.target.value,search:''})
@@ -24,14 +27,20 @@ const App = () => {
 }
 
 useEffect(()=>{
- 
+    
     const timer = setTimeout(()=>{
         if(filter.search === searchRef.current.value){ 
 
             if(filter.search === '')
             {
+                setIsLoading(true)
                 fetch(`https://vast-shore-74260.herokuapp.com/banks?city=${filter.city}`).then( response => response.json())
-                .then( resData => setData(resData)).catch(error => setError(error))
+                .then(resData => {
+                    setIsLoading(false)
+                        setData(resData)})
+                    .catch(error => {
+                        setIsLoading(false);
+                        setError(error);})
             }
             else{
             if(filter.category == 'IFSC')
@@ -56,8 +65,7 @@ useEffect(()=>{
     
 },[filter.search,searchRef])
     
-return(
-    <div className="container">
+    return(<div className="container">
     <div className="block-edge">
         <BlockEdge>
           <div className="inner-edge">
@@ -90,7 +98,7 @@ return(
         }}  onChange={filterHandler} id ="search" type="text" value={filter.search}/></div>
         </div>
         </div>
-        <Table rows={alldata}/>
+        {isLoading ?<Spinner/>:<Table rows={alldata}/>}
       </div>
   </div>
   )
