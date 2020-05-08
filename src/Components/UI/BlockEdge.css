@@ -1,0 +1,25 @@
+
+.edge-container {
+    position:relative;
+    width:auto;
+    height:50px;
+    padding:5px;
+    box-sizing: border-box;
+    background-color: black;
+    margin-left: 5px;
+    margin-top: 50px;
+    z-index: 2;
+}
+
+.edge-container:after {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top:25%;
+    left:100%;
+    border: 2px 2px solid white;
+    transform: rotate(45deg);
+    content: "";
+    margin-left: -5%;  
+    background-color:  white;
+}
